@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "ru.goshacosmetics.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "SkinTexturesMixin",
+    "HeldItemRendererMixin",
+    "EntityRendererMixin",
+    "LivingEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "goshacosmetics",
+  "version": "${version}",
+  "name": "GoshaCosmetics",
+  "description": "Визуальная косметика в голубых тонах: крылья, нимб, следы, аура, плащ.",
+  "authors": ["Geo"],
+  "license": "All-Rights-Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["ru.goshacosmetics.GoshaCosmeticsClient"]
+  },
+  "mixins": ["goshacosmetics.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "minecraft": "~1.21.4",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
