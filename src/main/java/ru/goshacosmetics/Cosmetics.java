@@ -46,7 +46,7 @@ public final class Cosmetics {
     public static int activeCount() {
         CosmeticsConfig c = CosmeticsConfig.get();
         CosmeticsConfig.Slot[] all = {c.hat, c.ears, c.horns, c.glasses, c.halo, c.scarf, c.backpack, c.aura, c.steps,
-                c.landing, c.trail, c.shield, c.wings, c.nametag, c.cloak};
+                c.landing, c.trail, c.shield, c.wings, c.motion, c.nametag, c.cloak};
         int n = 0;
         for (CosmeticsConfig.Slot s : all) if (s.style > 0) n++;
         return n;

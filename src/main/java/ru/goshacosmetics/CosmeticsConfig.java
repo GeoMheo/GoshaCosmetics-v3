@@ -47,6 +47,7 @@ public class CosmeticsConfig {
     public float shieldX = 0f, shieldY = 0f;
 
     public Slot wings = new Slot(1);
+    public Slot motion = new Slot(1);
 
     public Slot nametag = new Slot(0);
     public boolean nametagShowOwn = true;

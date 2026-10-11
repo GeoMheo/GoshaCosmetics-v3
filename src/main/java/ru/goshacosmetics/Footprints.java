@@ -24,7 +24,7 @@ public final class Footprints {
     private static final int MAX_STEPS = 80;
 
     private record Step(double x, double y, double z, float yaw, boolean left, long time) {}
-    private record Ripple(double x, double y, double z, long time) {}
+    private record Ripple(double x, double y, double z, long time, float fall) {}
 
     private static final List<Step> steps = new ArrayList<>();
     private static final List<Ripple> ripples = new ArrayList<>();
@@ -42,7 +42,8 @@ public final class Footprints {
         CosmeticsConfig c = CosmeticsConfig.get();
         long now = System.currentTimeMillis();
         steps.removeIf(s -> now - s.time > STEP_MS);
-        ripples.removeIf(r -> now - r.time > RIPPLE_MS);
+        long rippleMs = (long) (RIPPLE_MS * 1.6f / Math.max(0.2f, c.landing.speed));
+        ripples.removeIf(r -> now - r.time > rippleMs);
 
         for (AbstractClientPlayerEntity pl : mc.world.getPlayers()) {
             if (pl.isInvisible() || pl.isSpectator() || !Cosmetics.appliesTo(pl.getGameProfile().getName())) continue;
@@ -52,7 +53,7 @@ public final class Footprints {
             Boolean was = wasOnGround.put(id, onGround);
             Float fall = lastFall.put(id, pl.fallDistance);
             if (c.landing.style > 0 && onGround && was != null && !was && fall != null && fall > 1.2f) {
-                ripples.add(new Ripple(pl.getX(), pl.getY(), pl.getZ(), now));
+                ripples.add(new Ripple(pl.getX(), pl.getY(), pl.getZ(), now, fall));
             }
 
             double[] l = last.get(id);
@@ -107,13 +108,22 @@ public final class Footprints {
             }
         }
 
+        long rippleMs = (long) (RIPPLE_MS * 1.6f / Math.max(0.2f, cfg.landing.speed));
         for (Ripple r : ripples) {
-            float k = (now - r.time) / (float) RIPPLE_MS;
-            float radius = (0.3f + 1.6f * k) * ls;
-            int alpha = (int) (200 * (1 - k));
+            float k = Math.min(1f, (now - r.time) / (float) rippleMs);
+            float ease = 1f - (1f - k) * (1f - k);                       // быстро в начале, плавно в конце
+            float grow = Math.min(4f, 0.8f + r.fall * 0.25f);            // чем выше падение, тем шире круг
+            float radius = (0.3f + 1.7f * grow * ease) * ls;
+            int alpha = (int) (210 * (1 - k));
             float x = (float) (r.x - cam.x), y = (float) (r.y - cam.y) + 0.02f, z = (float) (r.z - cam.z);
-            ring(vc, m, x, y, z, radius - 0.10f, radius, Palette.argb(lp.primary, 0), Palette.argb(lp.light, alpha));
-            ring(vc, m, x, y, z, radius, radius + 0.06f, Palette.argb(lp.light, alpha), Palette.argb(lp.primary, 0));
+            if (cfg.landing.style == 2) {
+                float w = 0.05f * ls;
+                ring(vc, m, x, y, z, radius - w, radius, Palette.argb(0xFFFFFF, 0), Palette.argb(lp.light, alpha / 2));
+                ring(vc, m, x, y, z, radius, radius + w, Palette.argb(lp.light, alpha / 2), Palette.argb(0xFFFFFF, 0));
+            } else {
+                ring(vc, m, x, y, z, radius - 0.10f, radius, Palette.argb(lp.primary, 0), Palette.argb(lp.light, alpha));
+                ring(vc, m, x, y, z, radius, radius + 0.06f, Palette.argb(lp.light, alpha), Palette.argb(lp.primary, 0));
+            }
         }
         HaloRenderer.flush(vcp);
     }

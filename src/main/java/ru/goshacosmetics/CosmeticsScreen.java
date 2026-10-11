@@ -91,7 +91,6 @@ public class CosmeticsScreen extends Screen {
                 slot("Рюкзак", c.backpack, BodyModel.BACKPACK, null, null);
                 slot("Аура", c.aura, Particles.AURA, "Плотность", null);
                 slot("Следы шагов", c.steps, Footprints.NAMES, null, null);
-                slot("Волна при приземлении", c.landing, new String[]{"Выкл", "Волна"}, null, null);
                 slot("След при беге", c.trail, Particles.TRAIL, null, null);
             }
             case SHIELD -> {
@@ -102,6 +101,11 @@ public class CosmeticsScreen extends Screen {
                 toggle("Прятать, если в левой руке предмет", () -> c.shieldHideOffhand, v -> c.shieldHideOffhand = v);
                 slider("Сдвиг от первого лица: X", -1f, 1f, () -> c.shieldX, v -> c.shieldX = v, "%.2f");
                 slider("Сдвиг от первого лица: Y", -1f, 1f, () -> c.shieldY, v -> c.shieldY = v, "%.2f");
+            }
+            case EFFECTS -> {
+                slot("След за игроком", c.motion, MotionTrail.NAMES, "Скорость таяния", null);
+                slot("Круг при приземлении", c.landing, new String[]{"Выкл", "Волна", "Кольцо"}, "Скорость роста", null);
+                label(Text.literal("Чем выше прыжок или падение, тем шире круг.").formatted(Formatting.DARK_GRAY), Ui.MUTED);
             }
             case WINGS -> slot("Крылья", c.wings, WingModel.NAMES, "Скорость взмахов", null);
             case NAMETAG -> {

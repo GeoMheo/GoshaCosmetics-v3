@@ -42,6 +42,7 @@ public class GoshaCosmeticsClient implements ClientModInitializer {
             ctx.drawTextWithShadow(mc.textRenderer, brand, ctx.getScaledWindowWidth() - mc.textRenderer.getWidth(brand) - 4, 4, 0xFFFFFFFF);
         });
         WorldRenderEvents.AFTER_ENTITIES.register(HaloRenderer::render);
+        WorldRenderEvents.AFTER_ENTITIES.register(MotionTrail::render);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (menuKey.wasPressed()) {
@@ -55,6 +56,7 @@ public class GoshaCosmeticsClient implements ClientModInitializer {
                         .formatted(c.enabled ? Formatting.AQUA : Formatting.GRAY), false);
             }
             Footprints.tick(client);
+            MotionTrail.tick(client);
             Particles.tick(client);
         });
     }
