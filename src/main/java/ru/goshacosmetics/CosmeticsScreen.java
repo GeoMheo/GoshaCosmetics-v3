@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 /** Меню косметики: вкладки слева, настройки справа, предпросмотр, «GoshaCosmetics» справа вверху. */
 public class CosmeticsScreen extends Screen {
     private enum Tab {
-        HAT("♔", "Шапка"), HEAD("☺", "Голова"), BODY("♙", "Тело"), SHIELD("⛨", "Щит"), WINGS("❦", "Крылья"),
+        HAT("♔", "Шапка"), HEAD("☺", "Голова"), BODY("♙", "Тело"), SHIELD("⛨", "Щит"), EFFECTS("✧", "Эффекты"), WINGS("❦", "Крылья"),
         NAMETAG("✎", "Ник"), CLOAK("⚑", "Плащ"), PROFILE("☻", "Профиль"), PRESETS("☰", "Пресеты"), SETTINGS("⚙", "Настройки");
 
         final String icon, title;
@@ -304,7 +304,7 @@ public class CosmeticsScreen extends Screen {
         Text brand = Ui.brand();
         ctx.drawTextWithShadow(textRenderer, brand, px + pw - 8 - textRenderer.getWidth(brand), py + 8, Ui.WHITE);
         // разделитель вкладок
-        int sepY = py + 28 + 7 * 20 + 4;
+        int sepY = py + 28 + 8 * 20 + 4;
         ctx.fill(sideX + 10, sepY, sideX + SIDE_W - 10, sepY + 1, Ui.BORDER);
     }
 
